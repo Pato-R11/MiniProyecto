@@ -1,0 +1,46 @@
+======================================================================
+  EJEMPLO 1: César paso a paso  (mensaje = "AD", k = 1)
+======================================================================
+  Letra 'A' (0): (0 + 1) mod 26 = 1 -> 'B'
+  Letra 'D' (3): (3 + 1) mod 26 = 4 -> 'E'
+  procesarMensaje("AD", 1, Cesar.cifrar) -> Success("BE")
+
+======================================================================
+  CASO CÉSAR  (mensaje = "FUNCIONAL", k = 3)
+======================================================================
+  Cifrar FUNCIONAL con k = 3             -> Success("IXQFLRQDO")
+  Descifrar con k = -3                   -> Success("FUNCIONAL")
+  Descifrar con Cesar.descifrar, k = 3   -> Success("FUNCIONAL")
+  ¿Se recuperó el original? true
+
+======================================================================
+  CASO XOR  (mensaje = "scala", k = 5)
+======================================================================
+  Carácter | ASCII | Binario   | XOR 5 (cálculo) | Binario   | Res. ASCII | Cifrado
+  ---------+-------+-----------+-----------------+-----------+------------+--------
+  s        |   115 | 0111 0011 |   115 ^ 5       | 0111 0110 |        118 | v
+  c        |    99 | 0110 0011 |    99 ^ 5       | 0110 0110 |        102 | f
+  a        |    97 | 0110 0001 |    97 ^ 5       | 0110 0100 |        100 | d
+  l        |   108 | 0110 1100 |   108 ^ 5       | 0110 1001 |        105 | i
+  a        |    97 | 0110 0001 |    97 ^ 5       | 0110 0100 |        100 | d
+  Cifrar scala con k = 5 (lambda ^)      -> Success("vfdid")
+  Volver a aplicar XOR con k = 5         -> Success("scala")
+  Con la versión validada Xor.cifrar     -> Success("vfdid")
+  ¿Se recuperó el original? true
+
+======================================================================
+  MANEJO DE ERRORES (fallos forzados, capturados con Try)
+======================================================================
+  Mensaje vacío ""                       -> Failure(MensajeInvalidoException: El mensaje está vacío)
+  Mensaje solo espacios "   "            -> Failure(MensajeInvalidoException: El mensaje está vacío)
+  Mensaje nulo (null)                    -> Failure(MensajeInvalidoException: El mensaje es nulo)
+  César con clave excesiva k = 1000      -> Failure(ClaveInvalidaException: Clave César fuera de rango: 1000 (permitido: -25..25))
+  XOR con clave excesiva k = 99999       -> Failure(ClaveInvalidaException: Clave XOR fuera de rango: 99999 (permitido: 0..127))
+  XOR con clave negativa k = -5          -> Failure(ClaveInvalidaException: Clave XOR fuera de rango: -5 (permitido: 0..127))
+  César con carácter especial "HOLA!"    -> Failure(CaracterNoSoportadoException: Carácter no soportado por César: '!')
+  César con dígitos "SCALA3"             -> Failure(CaracterNoSoportadoException: Carácter no soportado por César: '3')
+  César con 'Ñ' "ESPAÑA"                 -> Failure(CaracterNoSoportadoException: Carácter no soportado por César: 'Ñ')
+  XOR con carácter no ASCII "año€"       -> Failure(CaracterNoSoportadoException: Carácter no ASCII: 'ñ' (código 241))
+  recover sobre "HOLA!"                  -> Success("[no se pudo cifrar: Carácter no soportado por César: '!']")
+
+  Fin de la ejecución: ningún error detuvo el programa.
